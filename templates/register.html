@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureAuth | Register</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="security-panel">
+
+        <div class="shield">🛡️</div>
+
+        <h1>Create Secure Account</h1>
+
+        <p>
+            Your password is protected using
+            salted password hashing.
+        </p>
+
+        <div class="features">
+            <span>✓ Password Hashing</span>
+            <span>✓ Random Salt</span>
+            <span>✓ No Plaintext Storage</span>
+        </div>
+
+    </div>
+
+
+    <div class="form-panel">
+
+        <div class="form-box">
+
+            <h2>Register</h2>
+
+            <p class="subtitle">
+                Create a new SecureAuth account
+            </p>
+
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+
+                {% if messages %}
+
+                    {% for category, message in messages %}
+
+                        <div class="alert {{ category }}">
+                            {{ message }}
+                        </div>
+
+                    {% endfor %}
+
+                {% endif %}
+
+            {% endwith %}
+
+
+            <form method="POST">
+
+                <label>Username</label>
+
+                <input
+                    type="text"
+                    name="username"
+                    placeholder="Choose a username"
+                    required
+                >
+
+
+                <label>Password</label>
+
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Create a password"
+                    required
+                >
+
+
+                <button type="submit">
+                    Create Secure Account
+                </button>
+
+            </form>
+
+
+            <p class="bottom-text">
+
+                Already registered?
+
+                <a href="{{ url_for('login') }}">
+                    Login
+                </a>
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SecureAuth | Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <div class="dashboard-card">
+
+        <div class="success-icon">✓</div>
+
+        <h1>Authentication Successful</h1>
+
+        <p>
+            Welcome,
+            <strong>{{ username }}</strong>
+        </p>
+
+        <div class="status-box">
+
+            <h3>Security Status</h3>
+
+            <p>🔐 Identity verified</p>
+
+            <p>✓ Password hash matched</p>
+
+            <p>✓ Failed login counter reset</p>
+
+            <p>✓ Secure session created</p>
+
+        </div>
+
+
+        <a href="{{ url_for('logout') }}"
+           class="logout-button">
+
+            Logout
+
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>

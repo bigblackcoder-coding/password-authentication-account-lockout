@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>SecureAuth | Security Administration</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+</head>
+
+<body>
+
+<div class="admin-page">
+
+    <div class="admin-container">
+
+        <div class="admin-header">
+
+            <div>
+                <p class="admin-label">
+                    SECUREAUTH CONTROL CENTER
+                </p>
+
+                <h1>Security Administration</h1>
+
+                <p class="admin-description">
+                    Monitor authentication attempts and
+                    manage locked accounts.
+                </p>
+            </div>
+
+            <a
+                href="{{ url_for('login') }}"
+                class="back-button"
+            >
+                ← Login Page
+            </a>
+
+        </div>
+
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div class="alert {{ category }}">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        <div class="security-summary">
+
+            <div class="summary-card">
+                <span>SECURITY POLICY</span>
+                <strong>3 Attempts</strong>
+                <p>Maximum failed login attempts</p>
+            </div>
+
+            <div class="summary-card">
+                <span>PASSWORD STORAGE</span>
+                <strong>Hashed</strong>
+                <p>No plaintext passwords stored</p>
+            </div>
+
+            <div class="summary-card">
+                <span>LOCKOUT</span>
+                <strong>Enabled</strong>
+                <p>Accounts blocked after threshold</p>
+            </div>
+
+        </div>
+
+
+        <div class="user-table-card">
+
+            <div class="table-heading">
+
+                <div>
+                    <h2>User Security Status</h2>
+                    <p>
+                        Current authentication state of
+                        registered users
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>USER</th>
+                            <th>FAILED ATTEMPTS</th>
+                            <th>ACCOUNT STATUS</th>
+                            <th>ACTION</th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                    {% for user in users %}
+
+                        <tr>
+
+                            <td>
+                                <strong>
+                                    {{ user["username"] }}
+                                </strong>
+                            </td>
+
+
+                            <td>
+
+                                <span class="attempt-number">
+                                    {{ user["failed_attempts"] }}
+                                    / 3
+                                </span>
+
+                            </td>
+
+
+                            <td>
+
+                                {% if user["is_locked"] == 1 %}
+
+                                    <span class="status locked">
+                                        ● LOCKED
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="status active">
+                                        ● ACTIVE
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <td>
+
+                                {% if user["is_locked"] == 1 %}
+
+                                    <form
+                                        method="POST"
+                                        action="{{ url_for(
+                                            'unlock_account',
+                                            user_id=user['id']
+                                        ) }}"
+                                    >
+
+                                        <button
+                                            type="submit"
+                                            class="unlock-button"
+                                        >
+                                            🔓 Unlock Account
+                                        </button>
+
+                                    </form>
+
+                                {% else %}
+
+                                    <span class="no-action">
+                                        No action required
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <div class="admin-warning">
+
+            <strong>🔒 Security Notice</strong>
+
+            <p>
+                Passwords and password hashes are intentionally
+                hidden from this interface. Unlocking an account
+                only resets its failed-attempt counter and
+                lockout status.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
